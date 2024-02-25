@@ -18,54 +18,72 @@ class Question:
         
 
 
-class webscraper:
 
-    def createArray():
-        LeetUser = input("Input your LeetCode Username ")
-        my_url = "https://leetcode-api-faisalshohag.vercel.app/" + LeetUser
+LeetUser = input("Input your LeetCode Username ")
+my_url = "https://leetcode-api-faisalshohag.vercel.app/" + LeetUser
 
-        client = uReq(my_url)
+client = uReq(my_url)
 
-        page_html = client.read()
+page_html = client.read()
 
-        page_html
+page_html
 
-        page_soup = soup(page_html, features= "html.parser")
+page_soup = soup(page_html, features= "html.parser")
 
-        page_soup.getText
+page_soup.getText
 
-        text = page_soup.getText() + ""
+text = page_soup.getText() + ""
 
-        completedNum= int(text[15:text.index(",")])
+completedNum= int(text[15:text.index(",")])
+print(completedNum)
+print(completedNum)
+
+questionArray = list()
+while text.index("\"title\":")+9  != text.rindex("\"title\":")+9:
+
+    #print("times")
     
-        finish=0
-        questionArray=list()
-        while completedNum > finish:
+    indexStart = text.index("\"title\":")+9
+    text = text[indexStart:]
+    indexEnd = text.index(",")-1
+    name=text[0:indexEnd]
+    text = text[indexEnd:]
+    
+    indexStartTime = text.index("timestamp")+12
+    text = text[indexStartTime:]
+    endtext = text.index(",")-1
+    date = text[0:endtext]
+    text = text[endtext:]
+
+    indexStartAccepted = text.index("statusDisplay")+16
+    text = text[indexStartAccepted:]
+    endtext = text.index(",")-1
+    value = text[0:endtext]
+    
+    text = text[endtext:]
+    
+    Add = True
+    for i in questionArray:
+        if(i.returnName()==name):
+            Add = False
+        if(value != "Accepted"):
+            Add = False
+
+    if Add == True:
+        
+        questionArray.append(Question(name,date))
 
 
-            AllQuestion = ""
-
-            indexStart = text.index("\"title\":")+9
-            text = text[indexStart:]
-            indexEnd = text.index(",")-1
-            name=text[0:indexEnd]
-            text = text[indexEnd:]
+for j in questionArray:
+    print(j.returnName())
+        
 
     
-            try:
-                AllQuestion.index(name)
+
        
-     
-            except:
-                finish = finish+1
-                indexStartTime = text.index("timestamp")+12
-                text = text[indexStart:]
-                endtext = text.index(",")-1
-                date = text[0:indexEnd]
-                AllQuestion=AllQuestion+name
-                questionArray.append(Question(name,date))
-            return questionArray
-       
+
+
+
   
 
 
